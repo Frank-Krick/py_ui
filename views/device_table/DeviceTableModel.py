@@ -2,6 +2,7 @@ from PyQt4 import QtCore
 from PyQt4.QtCore import Qt
 
 from model import Model
+import itk
 
 
 class DeviceTableModel(QtCore.QAbstractTableModel):
@@ -22,7 +23,12 @@ class DeviceTableModel(QtCore.QAbstractTableModel):
             elif index.column() == 1:
                 return QtCore.QVariant(device.description)
             elif index.column() == 2:
-                return QtCore.QVariant(device.deviceType)
+                if device.deviceType == itk.DeviceType.Audio:
+                    return QtCore.QVariant("Audio Device")
+                elif device.deviceType == itk.DeviceType.Control:
+                    return QtCore.QVariant("Control Device")
+                else:
+                    return QtCore.QVariant(device.deviceType)
 
     def headerData(self, section, orientation, role=Qt.DisplayRole):
         if role == Qt.TextAlignmentRole and orientation == Qt.Horizontal:
