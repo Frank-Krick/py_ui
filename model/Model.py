@@ -4,14 +4,6 @@ from PyQt4 import QtGui
 import itk
 
 
-class Device:
-    def __init__(self, name, description, device_type, id):
-        self.name = name
-        self.description = description
-        self.deviceType = device_type
-        self._id = id
-
-
 class Model:
     def __init__(self):
         self._create_device_list()
