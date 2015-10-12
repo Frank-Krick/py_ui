@@ -10,3 +10,7 @@
 .idea/vcs.xml
 
 .idea/workspace.xml
+
+model/Model.pyc
+
+views/device_table/DeviceTableModel.pyc
