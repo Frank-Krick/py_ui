@@ -10,4 +10,3 @@ class DeviceGraphView(QtGui.QGraphicsView):
         self.setRenderHint(QtGui.QPainter.TextAntialiasing)
         self.itk = itk
         self.graphIndex = graph_index
-
