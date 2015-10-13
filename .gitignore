@@ -14,3 +14,5 @@
 model/Model.pyc
 
 views/device_table/DeviceTableModel.pyc
+
+*.pyc
