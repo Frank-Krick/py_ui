@@ -1,2 +1,4 @@
 import DeviceGraphView
 import DeviceActionMenuGraphicsItem
+import DeviceGraphScene
+import ConnectionGraphicsItem

@@ -1,0 +1,69 @@
+from PyQt4 import QtGui
+from PyQt4 import QtCore
+from PyQt4.QtCore import Qt
+
+import math
+import views
+
+
+class DeviceItem:
+    def __init__(self, item, device):
+        self.device = device
+        self.item = item
+
+
+class ConnectionItem:
+    def __init__(self, source_id, target_it, item):
+        self.sourceId = source_id
+        self.targetId = target_it
+        self.item = item
+
+
+class DeviceGraphModel:
+    def __init__(self, device_graph):
+        self.scene = None
+        self._deviceGraph = device_graph
+        self._deviceItemMap = {}
+        self._radianToDegreeFactor = 180 / math.pi
+
+    def device(self, device_id):
+        device = None
+        item = self._deviceItemMap[device_id]
+        return DeviceItem(item, device)
+
+    def device_graph_graphics_scene(self):
+        if self.scene is None:
+            self.scene = views.DeviceGraphScene(self)
+            self._create_graphics_scene(self.scene)
+        return self.scene
+
+    def _create_graphics_scene(self, scene):
+        brush = QtGui.QBrush(Qt.black)
+        self.scene.setBackgroundBrush(brush)
+        self._add_devices_to_scene(self._deviceGraph, scene)
+        self._add_connections_to_scene(self._deviceGraph, scene)
+
+    def _add_connections_to_scene(self, device_graph, scene):
+        for connection in device_graph.audioConnections:
+            item = views.ConnectionGraphicsItem(connection.source, connection.target, self)
+            item.setZValue(0)
+            scene.addItem(item)
+            source_item = self._deviceItemMap[connection.source]
+            target_item = self._deviceItemMap[connection.target]
+            source_item.add_connection(
+                ConnectionItem(connection.source, connection.target, item))
+            target_item.add_connection(
+                ConnectionItem(connection.source, connection.target, item))
+
+    def _add_devices_to_scene(self, device_graph, scene):
+        x = [-300, 0, 300, 600]
+        y = [-300, 0, 300, 600]
+        for device in device_graph.devices:
+            item = views.DeviceGraphicsItem(device)
+            self._deviceItemMap[device.deviceId] = item
+            menu = views.DeviceActionMenuGraphicsItem(item)
+            menu.setPos(QtCore.QPointF(154, 39))
+            position = QtCore.QPointF(x[device.deviceId], y[device.deviceId])
+            item.setPos(position)
+            item.setZValue(1.0)
+            scene.addItem(item)
