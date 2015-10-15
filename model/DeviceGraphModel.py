@@ -45,19 +45,24 @@ class DeviceGraphModel:
 
     def _add_connections_to_scene(self, device_graph, scene):
         for connection in device_graph.audioConnections:
-            item = views.ConnectionGraphicsItem(connection.source, connection.target, self)
-            item.setZValue(0)
-            scene.addItem(item)
-            source_item = self._deviceItemMap[connection.source]
-            target_item = self._deviceItemMap[connection.target]
-            source_item.add_connection(
-                ConnectionItem(connection.source, connection.target, item))
-            target_item.add_connection(
-                ConnectionItem(connection.source, connection.target, item))
+            self._add_connection(connection, views.ConnectionType.Audio, scene)
+        for connection in device_graph.controlConnections:
+            self._add_connection(connection, views.ConnectionType.Control, scene)
+
+    def _add_connection(self, connection, connection_type, scene):
+        item = views.ConnectionGraphicsItem(connection.source, connection.target, self, connection_type)
+        item.setZValue(0)
+        scene.addItem(item)
+        source_item = self._deviceItemMap[connection.source]
+        target_item = self._deviceItemMap[connection.target]
+        source_item.add_connection(
+            ConnectionItem(connection.source, connection.target, item))
+        target_item.add_connection(
+            ConnectionItem(connection.source, connection.target, item))
 
     def _add_devices_to_scene(self, device_graph, scene):
-        x = [-300, 0, 300, 600]
-        y = [-300, 0, 300, 600]
+        x = [-300, 0, 300, 600, -300, 600]
+        y = [-100, 0, 100, 200, 0, 0]
         for device in device_graph.devices:
             item = views.DeviceGraphicsItem(device)
             self._deviceItemMap[device.deviceId] = item

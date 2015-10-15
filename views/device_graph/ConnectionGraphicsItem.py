@@ -5,8 +5,13 @@ from PyQt4 import QtGui
 import math
 
 
+class ConnectionType:
+    Audio = 1
+    Control = 2
+
+
 class ConnectionGraphicsItem(QtGui.QGraphicsItem):
-    def __init__(self, source_id, target_id, graph_model, parent=None):
+    def __init__(self, source_id, target_id, graph_model, connection_type, parent=None):
         QtGui.QGraphicsItem.__init__(self, parent)
         self.setFlag(QtGui.QGraphicsItem.ItemIsMovable, False)
         self.setFlag(QtGui.QGraphicsItem.ItemIsSelectable, True)
@@ -14,6 +19,7 @@ class ConnectionGraphicsItem(QtGui.QGraphicsItem):
         self._sourceId = source_id
         self._targetId = target_id
         self._model = graph_model
+        self._connectionType = connection_type
         self._radianToDegreeFactor = 180 / math.pi
         self._start = None
         self._end = None
@@ -98,19 +104,31 @@ class ConnectionGraphicsItem(QtGui.QGraphicsItem):
         return QtCore.QPointF(x, y)
 
     def _setup_upper_pattern_brush(self):
-        color = QtGui.QColor(Qt.blue)
+        color = None
+        if self._connectionType == ConnectionType.Audio:
+            color = QtGui.QColor(Qt.blue)
+        elif self._connectionType == ConnectionType.Control:
+            color = QtGui.QColor(Qt.red)
         brush = QtGui.QBrush(color)
         brush.setStyle(Qt.FDiagPattern)
         return brush
 
     def _setup_lower_pattern_brush(self):
-        color = QtGui.QColor(Qt.blue)
+        color = None
+        if self._connectionType == ConnectionType.Audio:
+            color = QtGui.QColor(Qt.blue)
+        elif self._connectionType == ConnectionType.Control:
+            color = QtGui.QColor(Qt.red)
         brush = QtGui.QBrush(color)
         brush.setStyle(Qt.BDiagPattern)
         return brush
 
     def _setup_background_brush(self):
-        color = QtGui.QColor(Qt.darkBlue)
+        color = None
+        if self._connectionType == ConnectionType.Audio:
+            color = QtGui.QColor(Qt.darkBlue)
+        elif self._connectionType == ConnectionType.Control:
+            color = QtGui.QColor(Qt.darkRed)
         brush = QtGui.QBrush(color)
         brush.setStyle(Qt.SolidPattern)
         return brush

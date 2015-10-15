@@ -22,11 +22,15 @@ class Model:
             self._deviceGraph.add_device(self._audioDevices[0]),
             self._deviceGraph.add_device(self._audioDevices[0]),
         ]
-        control_device_ids = []
+        control_device_ids = [
+            self._deviceGraph.add_device(self._controlDevices[0]),
+            self._deviceGraph.add_device(self._controlDevices[0]),
+        ]
         self._deviceGraph.connect(audio_device_ids[0], audio_device_ids[1])
         self._deviceGraph.connect(audio_device_ids[2], audio_device_ids[3])
         self._deviceGraph.connect(audio_device_ids[0], audio_device_ids[3])
-        #self._deviceGraph.connect(control_device_ids[1], audio_device_ids[1], 0)
+        self._deviceGraph.connect(control_device_ids[0], audio_device_ids[1], 0)
+        self._deviceGraph.connect(control_device_ids[1], audio_device_ids[2], 0)
 
     def _create_device_list(self):
         device_registry = itk.DeviceRegistry()
