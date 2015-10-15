@@ -1,36 +1,40 @@
-import DeviceGraphModel
+from model.device_graph import DeviceGraphModel
 import itk
 
 
 class Model:
     def __init__(self):
-        self._deviceGraph = itk.DeviceGraph()
         self._create_device_list()
+        device_graph = itk.DeviceGraph()
+        self.deviceGraphModel = DeviceGraphModel.DeviceGraphModel(device_graph)
         self._test_setup()
-        self._deviceGraphModel = DeviceGraphModel.DeviceGraphModel(self._deviceGraph)
 
     def device_list(self):
         return self._deviceList
 
+    def device(self, device_index):
+        return self._deviceList[device_index]
+
     def device_graph_graphics_scene(self):
-        return self._deviceGraphModel.device_graph_graphics_scene()
+        return self.deviceGraphModel.device_graph_graphics_scene()
 
     def _test_setup(self):
         audio_device_ids = [
-            self._deviceGraph.add_device(self._audioDevices[0]),
-            self._deviceGraph.add_device(self._audioDevices[0]),
-            self._deviceGraph.add_device(self._audioDevices[0]),
-            self._deviceGraph.add_device(self._audioDevices[0]),
+            self.deviceGraphModel.add_device(self._audioDevices[0]),
+            self.deviceGraphModel.add_device(self._audioDevices[0]),
+            self.deviceGraphModel.add_device(self._audioDevices[0]),
+            self.deviceGraphModel.add_device(self._audioDevices[0]),
         ]
         control_device_ids = [
-            self._deviceGraph.add_device(self._controlDevices[0]),
-            self._deviceGraph.add_device(self._controlDevices[0]),
+            self.deviceGraphModel.add_device(self._controlDevices[0]),
+            self.deviceGraphModel.add_device(self._controlDevices[0]),
         ]
-        self._deviceGraph.connect(audio_device_ids[0], audio_device_ids[1])
-        self._deviceGraph.connect(audio_device_ids[2], audio_device_ids[3])
-        self._deviceGraph.connect(audio_device_ids[0], audio_device_ids[3])
-        self._deviceGraph.connect(control_device_ids[0], audio_device_ids[1], 0)
-        self._deviceGraph.connect(control_device_ids[1], audio_device_ids[2], 0)
+        self.deviceGraphModel.connect(audio_device_ids[0], audio_device_ids[1])
+        self.deviceGraphModel.connect(audio_device_ids[2], audio_device_ids[3])
+        self.deviceGraphModel.connect(audio_device_ids[0], audio_device_ids[3])
+        self.deviceGraphModel.connect(audio_device_ids[1], audio_device_ids[2])
+        self.deviceGraphModel.connect(control_device_ids[0], audio_device_ids[1], 0)
+        self.deviceGraphModel.connect(control_device_ids[1], audio_device_ids[2], 0)
 
     def _create_device_list(self):
         device_registry = itk.DeviceRegistry()

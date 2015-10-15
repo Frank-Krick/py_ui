@@ -51,3 +51,6 @@ class DeviceTableModel(QtCore.QAbstractTableModel):
 
     def columnCount(self, parent=QtCore.QModelIndex(), *args, **kwargs):
         return len(self.columnHeaders)
+
+    def supportedDragActions(self):
+        return Qt.CopyAction
