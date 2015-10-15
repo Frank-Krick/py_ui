@@ -13,6 +13,15 @@ class DeviceGraphicsItem(QtGui.QGraphicsItem):
         self.setAcceptsHoverEvents(True)
         self._hover = False
         self._padding = 5
+        self._connections = []
+
+    def add_connection(self, connection):
+        self._connections.append(connection)
+
+    def mouseMoveEvent(self, event):
+        QtGui.QGraphicsItem.mouseMoveEvent(self, event)
+        for connection in self._connections:
+            connection.item.update_device_position()
 
     def boundingRect(self):
         return QtCore.QRectF(0.0, 0.0, 200.0, 125.0)
