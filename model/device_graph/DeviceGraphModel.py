@@ -31,6 +31,15 @@ class DeviceGraphModel:
         item = self._deviceItemMap[device_id]
         return DeviceItem(item, device)
 
+    def add_device(self, device):
+        return self._deviceGraph.add_device(device)
+
+    def connect(self, source, target, parameter=None):
+        if parameter is None:
+            self._deviceGraph.connect(source, target)
+        else:
+            self._deviceGraph.connect(source, target, parameter)
+
     def device_graph_graphics_scene(self):
         if self.scene is None:
             self.scene = views.DeviceGraphScene(self)
@@ -62,7 +71,7 @@ class DeviceGraphModel:
 
     def _add_devices_to_scene(self, device_graph, scene):
         x = [-300, 0, 300, 600, -300, 600]
-        y = [-100, 0, 100, 200, 0, 0]
+        y = [-100, 150, 100, 200, 200, 0]
         for device in device_graph.devices:
             item = views.DeviceGraphicsItem(device)
             self._deviceItemMap[device.deviceId] = item
