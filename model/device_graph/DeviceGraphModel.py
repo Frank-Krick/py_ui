@@ -25,10 +25,12 @@ class DeviceGraphModel:
         self._deviceGraph = device_graph
         self._deviceItemMap = {}
         self._radianToDegreeFactor = 180 / math.pi
+        self.deviceGraphController = None
+        self.deviceGraphScene = None
 
     def device(self, device_id):
         device = None
-        item = self._deviceItemMap[device_id]
+        item = self.deviceGraphScene.device_item(device_id)
         return DeviceItem(item, device)
 
     def add_device(self, device):
@@ -77,7 +79,7 @@ class DeviceGraphModel:
             self._deviceItemMap[device.deviceId] = item
             menu = views.DeviceActionMenuGraphicsItem(item)
             menu.setPos(QtCore.QPointF(154, 39))
-            position = QtCore.QPointF(x[device.deviceId], y[device.deviceId])
+            position = QtCore.QPointF(x[device.deviceId], [device.deviceId])
             item.setPos(position)
             item.setZValue(1.0)
             scene.addItem(item)

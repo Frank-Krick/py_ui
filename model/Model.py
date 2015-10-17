@@ -7,7 +7,6 @@ class Model:
         self._create_device_list()
         device_graph = itk.DeviceGraph()
         self.deviceGraphModel = DeviceGraphModel.DeviceGraphModel(device_graph)
-        self._test_setup()
 
     def device_list(self):
         return self._deviceList
