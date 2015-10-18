@@ -2,11 +2,18 @@ from PyQt4 import QtCore
 from PyQt4.QtCore import Qt
 from PyQt4 import QtGui
 
+from AddConnectionGraphicsItem import AddConnectionGraphicsItem
+from ParameterMenuGraphicsItem import ParameterMenuGraphicsItem
+
 
 class DeviceGraphicsItem(QtGui.QGraphicsItem):
-    def __init__(self, device, parent=None):
+    def __init__(self, device_id, device, device_graph_controller, scene, parent=None):
         QtGui.QGraphicsItem.__init__(self, parent)
-        self._device = device
+        self._addConnectionControl = AddConnectionGraphicsItem(device_graph_controller, self)
+        self._addConnectionControl.setPos(QtCore.QPointF(
+            200 - self._addConnectionControl.boundingRect().width(),
+            125 - self._addConnectionControl.boundingRect().height()
+        ))
         self.setFlag(QtGui.QGraphicsItem.ItemIsMovable, True)
         self.setFlag(QtGui.QGraphicsItem.ItemIsSelectable, True)
         self.setFlag(QtGui.QGraphicsItem.ItemClipsToShape, True)
@@ -14,17 +21,26 @@ class DeviceGraphicsItem(QtGui.QGraphicsItem):
         self._hover = False
         self._padding = 5
         self._connections = []
+        self.setZValue(1)
+        self.deviceId = device_id
+        self._device = device
+        self._parameterMenu = self._create_parameter_menu(scene)
+        self._parameterMenu.setVisible(False)
 
     def add_connection(self, connection):
         self._connections.append(connection)
 
+    def display_parameter_menu(self):
+        self._parameterMenu.setVisible(True)
+        self.update()
+
     def mouseMoveEvent(self, event):
         QtGui.QGraphicsItem.mouseMoveEvent(self, event)
         for connection in self._connections:
-            connection.item.update_device_position()
+            connection.update_device_position()
 
     def boundingRect(self):
-        return QtCore.QRectF(0.0, 0.0, 200.0, 125.0)
+        return QtCore.QRectF(-10, -10, 200 + 10, 125 + 10)
 
     def paint(self, painter, style_options, widget=None):
         color = QtGui.QColor(Qt.darkYellow)
@@ -39,7 +55,7 @@ class DeviceGraphicsItem(QtGui.QGraphicsItem):
         text_option = QtGui.QTextOption()
         text_option.setAlignment(QtCore.Qt.AlignCenter)
         text_position = QtCore.QRectF(0, 0 + self._padding, 200, 35)
-        painter.drawText(text_position, self._device.name, text_option)
+        painter.drawText(text_position, 'device', text_option)
         painter.drawLine(0 + self._padding, 34, 200, 34)
 
     def hoverEnterEvent(self, event):
@@ -58,3 +74,7 @@ class DeviceGraphicsItem(QtGui.QGraphicsItem):
         self.setGraphicsEffect(None)
         self.update()
 
+    def _create_parameter_menu(self, scene):
+        item = ParameterMenuGraphicsItem(self._device, scene, self)
+        item.setPos(QtCore.QPointF(-10, -10))
+        return item
