@@ -3,10 +3,11 @@ from PyQt4.QtCore import Qt
 from PyQt4 import QtGui
 
 from AddConnectionGraphicsItem import AddConnectionGraphicsItem
+from ParameterMenuGraphicsItem import ParameterMenuGraphicsItem
 
 
 class DeviceGraphicsItem(QtGui.QGraphicsItem):
-    def __init__(self, device_id, device_graph_controller, parent=None):
+    def __init__(self, device_id, device, device_graph_controller, scene, parent=None):
         QtGui.QGraphicsItem.__init__(self, parent)
         self._addConnectionControl = AddConnectionGraphicsItem(device_graph_controller, self)
         self._addConnectionControl.setPos(QtCore.QPointF(
@@ -22,9 +23,16 @@ class DeviceGraphicsItem(QtGui.QGraphicsItem):
         self._connections = []
         self.setZValue(1)
         self.deviceId = device_id
+        self._device = device
+        self._parameterMenu = self._create_parameter_menu(scene)
+        self._parameterMenu.setVisible(False)
 
     def add_connection(self, connection):
         self._connections.append(connection)
+
+    def display_parameter_menu(self):
+        self._parameterMenu.setVisible(True)
+        self.update()
 
     def mouseMoveEvent(self, event):
         QtGui.QGraphicsItem.mouseMoveEvent(self, event)
@@ -32,7 +40,7 @@ class DeviceGraphicsItem(QtGui.QGraphicsItem):
             connection.update_device_position()
 
     def boundingRect(self):
-        return QtCore.QRectF(0.0, 0.0, 200.0, 125.0)
+        return QtCore.QRectF(-10, -10, 200 + 10, 125 + 10)
 
     def paint(self, painter, style_options, widget=None):
         color = QtGui.QColor(Qt.darkYellow)
@@ -66,3 +74,7 @@ class DeviceGraphicsItem(QtGui.QGraphicsItem):
         self.setGraphicsEffect(None)
         self.update()
 
+    def _create_parameter_menu(self, scene):
+        item = ParameterMenuGraphicsItem(self._device, scene, self)
+        item.setPos(QtCore.QPointF(-10, -10))
+        return item

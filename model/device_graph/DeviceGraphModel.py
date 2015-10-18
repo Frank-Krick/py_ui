@@ -29,7 +29,7 @@ class DeviceGraphModel:
         self.deviceGraphScene = None
 
     def device(self, device_id):
-        device = None
+        device = self._deviceGraph.device(device_id)
         item = self.deviceGraphScene.device_item(device_id)
         return DeviceItem(item, device)
 
