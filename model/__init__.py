@@ -1,2 +1,3 @@
 from model.Model import Model
 from device_graph.DeviceGraphModel import DeviceGraphModel
+from parameter_table.ParameterTableModel import ParameterTableModel
