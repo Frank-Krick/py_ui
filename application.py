@@ -17,7 +17,7 @@ class MainWindow(QtGui.QMainWindow):
         self.setup()
 
     def setup(self):
-        self.resize(900, 600)
+        self.resize(1200, 600)
         self.move(70, 50)
         self.setWindowTitle('Instrument Tool Kit')
         self.setCentralWidget(self._deviceGraphEditor)

@@ -2,13 +2,12 @@ from PyQt4 import QtCore
 from PyQt4 import QtGui
 from PyQt4.QtCore import Qt
 
-from model import Model
 import itk
 
 
 class DeviceTableModel(QtCore.QAbstractTableModel):
     def __init__(self, itk):
-        super(DeviceTableModel, self).__init__()
+        QtCore.QAbstractTableModel.__init__(self)
         self.columnHeaders = ['Device']
         self.devices = itk.device_list()
         self._controlDeviceIcon = QtGui.QImage("resources/device_table_icons/control_device.png")

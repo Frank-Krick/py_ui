@@ -4,19 +4,7 @@ from PyQt4.QtCore import Qt
 
 import math
 import views
-
-
-class DeviceItem:
-    def __init__(self, item, device):
-        self.device = device
-        self.item = item
-
-
-class ConnectionItem:
-    def __init__(self, source_id, target_it, item):
-        self.sourceId = source_id
-        self.targetId = target_it
-        self.item = item
+import utility
 
 
 class DeviceGraphModel:
@@ -31,12 +19,16 @@ class DeviceGraphModel:
     def device(self, device_id):
         device = self._deviceGraph.device(device_id)
         item = self.deviceGraphScene.device_item(device_id)
-        return DeviceItem(item, device)
+        return utility.DeviceItem(item, device)
+
+    @property
+    def devices(self):
+        return self._deviceGraph.devices
 
     def add_device(self, device):
         return self._deviceGraph.add_device(device)
 
-    def connect(self, source, target, parameter=None):
+    def connect_devices(self, source, target, parameter=None):
         if parameter is None:
             self._deviceGraph.connect(source, target)
         else:
@@ -47,6 +39,12 @@ class DeviceGraphModel:
             self.scene = views.DeviceGraphScene(self)
             self._create_graphics_scene(self.scene)
         return self.scene
+
+    def parameter_value(self, device_id, parameter_id, value=None):
+        if value is None:
+            return self._deviceGraph.parameter_value(device_id, parameter_id)
+        else:
+            self._deviceGraph.parameter_value(device_id, parameter_id, value)
 
     def _create_graphics_scene(self, scene):
         brush = QtGui.QBrush(Qt.black)
@@ -67,9 +65,9 @@ class DeviceGraphModel:
         source_item = self._deviceItemMap[connection.source]
         target_item = self._deviceItemMap[connection.target]
         source_item.add_connection(
-            ConnectionItem(connection.source, connection.target, item))
+            utility.ConnectionItem(connection.source, connection.target, item))
         target_item.add_connection(
-            ConnectionItem(connection.source, connection.target, item))
+            utility.ConnectionItem(connection.source, connection.target, item))
 
     def _add_devices_to_scene(self, device_graph, scene):
         x = [-300, 0, 300, 600, -300, 600]

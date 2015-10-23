@@ -7,3 +7,4 @@ from device_graph.DeviceActionMenuGraphicsItem import DeviceActionMenuGraphicsIt
 from device_graph.DeviceGraphScene import DeviceGraphScene
 from device_graph.ConnectionGraphicsItem import ConnectionGraphicsItem
 from device_graph.ConnectionGraphicsItem import ConnectionType
+from toolbox.ToolBoxView import ToolBoxView

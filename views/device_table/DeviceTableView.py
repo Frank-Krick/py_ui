@@ -25,4 +25,4 @@ class DeviceTableView(QtGui.QTableView):
         pixmap = pixmap.grabWidget(self, self.visualRect(index))
         drag.setPixmap(pixmap)
         drag.setHotSpot(event.pos() - self.visualRect(index).topLeft())
-        dropAction = drag.exec_()
+        drag.exec_()

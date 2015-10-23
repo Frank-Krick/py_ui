@@ -30,6 +30,15 @@ class DeviceGraphScene(QtGui.QGraphicsScene):
                     return item
         return None
 
+    def select_inspected_item(self, device_id):
+        for item in self.items():
+            if isinstance(item, views.DeviceGraphicsItem):
+                if item.deviceId == device_id:
+                    item.selectedForInspection = True
+                else:
+                    item.selectedForInspection = False
+                item.update()
+
     def start_add_connection(self, position, source_device_id):
         if self._addConnectionMode is False:
             self._addConnectionMode = True
@@ -64,7 +73,7 @@ class DeviceGraphScene(QtGui.QGraphicsScene):
         self._addConnectionMode = False
         self._selectParameterMode = False
         self.removeItem(self._addConnectionItem)
-        self.deviceGraphController.connect(source, target, parameter)
+        self.deviceGraphController.connect_devices(source, target, parameter)
 
     def mouseMoveEvent(self, event):
         if self._selectParameterMode is True and self._addConnectionMode is True:

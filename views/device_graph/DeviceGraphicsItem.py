@@ -26,6 +26,9 @@ class DeviceGraphicsItem(QtGui.QGraphicsItem):
         self._device = device
         self._parameterMenu = self._create_parameter_menu(scene)
         self._parameterMenu.setVisible(False)
+        self._deviceGraphController = device_graph_controller
+        self.selectedForInspection = False
+        self._inspectorIcon = QtGui.QPixmap("resources/icons/inspect.png")
 
     def add_connection(self, connection):
         self._connections.append(connection)
@@ -57,6 +60,8 @@ class DeviceGraphicsItem(QtGui.QGraphicsItem):
         text_position = QtCore.QRectF(0, 0 + self._padding, 200, 35)
         painter.drawText(text_position, 'device', text_option)
         painter.drawLine(0 + self._padding, 34, 200, 34)
+        if self.selectedForInspection is True:
+            painter.drawPixmap(160, 0, self._inspectorIcon)
 
     def hoverEnterEvent(self, event):
         QtGui.QGraphicsItem.hoverEnterEvent(self, event)
@@ -73,6 +78,10 @@ class DeviceGraphicsItem(QtGui.QGraphicsItem):
         self._hover = False
         self.setGraphicsEffect(None)
         self.update()
+
+    def mousePressEvent(self, event):
+        self._deviceGraphController.select_device(self.deviceId)
+        QtGui.QGraphicsItem.mousePressEvent(self, event)
 
     def _create_parameter_menu(self, scene):
         item = ParameterMenuGraphicsItem(self._device, scene, self)

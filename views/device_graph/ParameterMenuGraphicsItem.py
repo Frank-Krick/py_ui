@@ -37,7 +37,7 @@ class ParameterMenuGraphicsItem(QtGui.QGraphicsItem):
     def _create_parameter_menu_items(self, scene):
         x = 0 + self._padding
         y = 0 + self._padding
-        for parameter in self._device.available_parameters:
+        for parameter in self._device.availableParameters:
             item = ParameterMenuItemGraphicsItem(parameter, scene, self)
             item.setPos(QtCore.QPointF(x, y))
             y += item.boundingRect().height() + self._spacing

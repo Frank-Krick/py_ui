@@ -7,12 +7,13 @@ import controller
 
 class DeviceGraphEditor(QtGui.QWidget):
     def __init__(self, itk):
-        super(DeviceGraphEditor, self).__init__()
+        QtGui.QWidget.__init__(self)
         scene = itk.device_graph_graphics_scene()
         self.deviceTableSplitter = QtGui.QSplitter(Qt.Horizontal)
         self.deviceTable = views.DeviceTableView()
         device_graph_controller = controller.DeviceGraphController(itk, scene)
         self.deviceGraph = views.DeviceGraphView(device_graph_controller)
+        self.toolBox = views.ToolBoxView(device_graph_controller, itk.deviceGraphModel)
         self.setup(itk, scene)
 
     def setup(self, itk, scene):
@@ -23,7 +24,8 @@ class DeviceGraphEditor(QtGui.QWidget):
     def _setup_splitter(self):
         self.deviceTableSplitter.addWidget(self.deviceTable)
         self.deviceTableSplitter.addWidget(self.deviceGraph)
-        self.deviceTableSplitter.setSizes([300, 700])
+        self.deviceTableSplitter.addWidget(self.toolBox)
+        self.deviceTableSplitter.setSizes([150, 550, 300])
         layout = QtGui.QBoxLayout(QtGui.QBoxLayout.LeftToRight)
         layout.addWidget(self.deviceTableSplitter)
         self.setLayout(layout)
