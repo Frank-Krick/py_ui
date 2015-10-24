@@ -8,3 +8,4 @@ from device_graph.DeviceGraphScene import DeviceGraphScene
 from device_graph.ConnectionGraphicsItem import ConnectionGraphicsItem
 from device_graph.ConnectionGraphicsItem import ConnectionType
 from toolbox.ToolBoxView import ToolBoxView
+from MainWindow import MainWindow

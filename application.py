@@ -10,30 +10,9 @@ import controller
 itk = model.Model()
 
 
-class MainWindow(QtGui.QMainWindow):
-    def __init__(self):
-        super(MainWindow, self).__init__()
-        self._deviceGraphEditor = views.DeviceGraphEditor(itk)
-        self.setup()
-
-    def setup(self):
-        self.resize(1200, 600)
-        self.move(70, 50)
-        self.setWindowTitle('Instrument Tool Kit')
-        self.setCentralWidget(self._deviceGraphEditor)
-
-    def create_button(self):
-        button = QtGui.QPushButton('Quit', self)
-        button.resize(button.sizeHint())
-        button.clicked.connect(self.button_clicked)
-
-    def button_clicked(self):
-        QtCore.QCoreApplication.instance().quit()
-
-
 def main():
     application = QtGui.QApplication(sys.argv)
-    window = MainWindow()
+    window = views.MainWindow(itk)
     window.show()
     sys.exit(application.exec_())
 

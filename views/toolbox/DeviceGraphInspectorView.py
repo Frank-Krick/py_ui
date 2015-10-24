@@ -17,7 +17,6 @@ class DeviceGraphInspectorView(QtGui.QWidget):
         self._deviceGraphModel = device_graph_model
         self._parameterTableModel = model.ParameterTableModel(self._deviceGraphModel)
         self._deviceGraphController.parameterTableModel = self._parameterTableModel
-        self._timeSeriesView = TimeSeriesView()
         self._create_device_selector(layout)
         self._create_parameter_table(layout)
         self._connect_signals()
@@ -67,6 +66,3 @@ class DeviceGraphInspectorView(QtGui.QWidget):
                 return index
             index += 1
         return None
-
-    def _create_time_series_view(self, group_box_layout):
-        group_box_layout.addWidget(self._timeSeriesView)
