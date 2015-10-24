@@ -9,9 +9,7 @@ import model
 class DeviceGraphInspectorView(QtGui.QWidget):
     def __init__(self, device_graph_controller, device_graph_model):
         QtGui.QWidget.__init__(self)
-        group_box = QtGui.QGroupBox(self)
         layout = QtGui.QVBoxLayout()
-        group_box.setLayout(layout)
         self._inspectedDeviceComboBox = None
         self._deviceGraphController = device_graph_controller
         self._deviceGraphModel = device_graph_model
@@ -20,6 +18,7 @@ class DeviceGraphInspectorView(QtGui.QWidget):
         self._create_device_selector(layout)
         self._create_parameter_table(layout)
         self._connect_signals()
+        self.setLayout(layout)
 
     def _connect_signals(self):
         self.connect(self._deviceGraphController,

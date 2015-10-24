@@ -13,10 +13,8 @@ class MainWindow(QtGui.QMainWindow):
         self._create_tabs(itk)
 
     def _create_tabs(self, itk):
-        tabs = QtGui.QTabWidget()
         device_graph_editor = views.DeviceGraphEditor(itk)
-        tabs.addTab(device_graph_editor, 'Device Graph Editor')
-        self.setCentralWidget(tabs)
+        self.setCentralWidget(device_graph_editor)
 
     def _setup_window(self):
         self.setWindowTitle('Instrument Tool Kit')
